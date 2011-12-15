@@ -14,10 +14,10 @@ PID=$(ps -eao pid,tty,command --forest | awk '$2 == "'$PTS'" {print $1; exit}')
 DIR=$(readlink /proc/$PID/cwd)
 
 case "$1" in
-  -h) tmux splitw -h "cd '$DIR'; $SHELL"
+  -h) tmux splitw -h "cd '$DIR'; exec $SHELL"
      ;;
-  -v) tmux splitw -v "cd '$DIR'; $SHELL"
+  -v) tmux splitw -v "cd '$DIR'; exec $SHELL"
      ;;
-  *) tmux neww "cd '$DIR'; $SHELL"
+  *) tmux neww "cd '$DIR'; exec $SHELL"
      ;;
 esac
