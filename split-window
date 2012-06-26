@@ -10,14 +10,19 @@ PTY=$(tmux server-info |
         grep "$SIP" |
         cut -d: -f4)
 PTS=${PTY#/dev/}
-PID=$(ps -eao pid,tty,command --forest | awk '$2 == "'$PTS'" {print $1; exit}')
-DIR=$(readlink /proc/$PID/cwd)
+PID=$(ps -eao pid,tty | awk '$2 == "'$PTS'" {print $1; exit}')
+DIR=$(lsof -a -p $PID -d cwd -Fn | awk '/^n/ {$0=substr($0,2); print}')
+EXE=$(lsof -a -p $PID -d txt -Fn | awk '/^n/ {$0=substr($0,2); print; exit}')
+
+tmux setenv TMUX_SHELL "$EXE"
+tmux setenv TMUX_PWD "$DIR"
 
 case "$1" in
-  -h) tmux splitw -h "cd '$DIR'; exec $SHELL"
+  -h) tmux splitw -h "exec ~/.tmux/new-window"
      ;;
-  -v) tmux splitw -v "cd '$DIR'; exec $SHELL"
+  -v) tmux splitw -v "exec ~/.tmux/new-window"
      ;;
-  *) tmux neww "cd '$DIR'; exec $SHELL"
+  *) tmux neww "exec ~/.tmux/new-window"
      ;;
 esac
+
