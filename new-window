@@ -1,5 +1,4 @@
 #!/bin/sh
-# tmux-split-in-cwd - open a new shell with same cwd as calling pane
 
 if [ -n "$TMUX_PWD" ]; then
   cd $TMUX_PWD

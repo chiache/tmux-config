@@ -25,4 +25,3 @@ case "$1" in
   *) tmux neww "exec ~/.tmux/new-window"
      ;;
 esac
-
