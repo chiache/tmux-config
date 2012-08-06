@@ -10,7 +10,7 @@ PTY=$(tmux server-info |
         grep "$SIP" |
         cut -d: -f4)
 PTS=${PTY#/dev/}
-PID=$(ps -eao pid,tty | awk '$2 == "'$PTS'" {print $1; exit}')
+PID=$(ps kstart_time -eao pid,tty | awk '$2 == "'$PTS'" {print $1; exit}')
 DIR=$(lsof -a -p $PID -d cwd -Fn | awk '/^n/ {$0=substr($0,2); print}')
 EXE=$(lsof -a -p $PID -d txt -Fn | awk '/^n/ {$0=substr($0,2); print; exit}')
 
