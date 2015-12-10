@@ -8,7 +8,7 @@ if [ -z "$TMUX_SHELL" ]; then
   TMUX_SHELL=$SHELL
 fi
 
-if [ -n "$(which reattach-to-user-namespace)" ]; then
+if [ -n "$(which reattach-to-user-namespace 2>/dev/null)" ]; then
   exec reattach-to-user-namespace -l $TMUX_SHELL
 else
   exec $TMUX_SHELL
